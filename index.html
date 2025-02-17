@@ -187,6 +187,21 @@
         <h1>Dashboard de Horários</h1>
     </header>
 
+    <div id="register-container" class="container mt-5" style="display: none;">
+        <h2 class="text-center">Registrar</h2>
+        <form id="registerForm">
+            <div class="mb-3">
+                <label for="newUsername" class="form-label">Usuário</label>
+                <input type="text" class="form-control" id="newUsername" required>
+            </div>
+            <div class="mb-3">
+                <label for="newPassword" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="newPassword" required>
+            </div>
+            <button type="submit" class="btn btn-success">Registrar</button>
+            <button type="button" class="btn btn-secondary" onclick="showLogin()">Voltar</button>
+        </form>
+    </div>
     
     <div class="container-fluid">
         <h2 class="text-center mb-4">Registrar Ponto</h2>
@@ -266,7 +281,14 @@
         </footer>
 
     <script>
+        //SEÇÃO REFERENTE AOS REGISTROS DE HORÁRIOS
+
         document.addEventListener("DOMContentLoaded", function () {
+
+            const loggedIn = localStorage.getItem("loggedIn");
+            if (loggedIn !== "true"){
+                window.location.href = "login.html";
+            }
 
             //ADICIONA UM PEQUENO ATRASO PARA GARANTIR QUE A PÁGINA ESTEJA CARREGADA
             setTimeout(function(){
@@ -298,6 +320,7 @@
             // FUNÇÃO PARA VALIDAR DATA
             function validarData(data) {
                 const hoje = new Date().toISOString().split('T')[0];
+                const dataInput = new Date(data).toISOString().split('T')[0];
                 return data <= hoje;
             }
 
@@ -306,6 +329,7 @@
                 fetch("http://127.0.0.1:5000/dados")
                     .then(response => response.json())
                     .then(data => {
+                        console.log("Dados recebidos:", data);
                         const tabela = document.getElementById("tabelaRegistros");
                         tabela.innerHTML = ""; // Limpa a tabela antes de preencher
 
@@ -391,6 +415,12 @@
                 fetch("http://127.0.0.1:5000/dados/mensal")
                     .then(response => response.json())
                     .then(data => {
+                        if (Object.keys(data).length === 0){
+                            console.log("Nenhum dado mensal encontrado.");
+                            return;
+                        }
+
+                        //RENDERIZAR GRÁFICO MÉDIA MENSAL
                         const canvasMensal = document.getElementById("graficoMensal");
                         const chartExistenteMensal = Chart.getChart(canvasMensal);
                         if (chartExistenteMensal) {
@@ -551,7 +581,7 @@
 
             //CONVERTE A DATA PARA "DD-MM-YYYY" ANTES DE EXIBIR NA TABELA
             function formatarDataParaTabel(data){
-                const parts = data.split("-");
+                const partes = data.split("-");
                 return `${partes[2]}-${partes[1]}-${partes[0]}`;
             }
 
