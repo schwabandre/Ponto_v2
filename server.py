@@ -159,41 +159,76 @@ def registrar_ponto():
 @app.route("/dados", methods=["GET"])
 @login_required
 def obter_dados():
-    registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
+    try:
+        registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
 
-    dados = [{
-        "id": registro.id,
-        "data": registro.data.strftime("%d-%m-%Y"),
-        "entrada": registro.entrada.strftime("%H:%M"),
-        "saida_almoco": registro.saida_almoco.strftime("%H:%M"),
-        "retorno_almoco": registro.retorno_almoco.strftime("%H:%M"),
-        "saida": registro.saida.strftime("%H:%M"),
-        "saldo": registro.saldo,
-        "extra": registro.extra,
-        "obs": registro.obs
-    } for registro in registros]
+        dados = [{
+            "id": registro.id,
+            "data": registro.data.strftime("%d-%m-%Y"),
+            "entrada": registro.entrada.strftime("%H:%M"),
+            "saida_almoco": registro.saida_almoco.strftime("%H:%M"),
+            "retorno_almoco": registro.retorno_almoco.strftime("%H:%M"),
+            "saida": registro.saida.strftime("%H:%M"),
+            "saldo": registro.saldo,
+            "extra": registro.extra,
+            "obs": registro.obs
+        } for registro in registros]
 
-    return jsonify(dados), 200
+        return jsonify(dados), 200
+    except Exception as e:
+        logger.error(f"Erro ao obter dados: {str(e)}")
+        return jsonify({"message": "Erro ao carregar registros"}), 500
+    
+
 
 # Rota para obter dados de saldo de horas (filtrados por usuário)
 @app.route("/dados/saldo", methods=["GET"])
 @login_required
 def obter_saldo_horas():
-    registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
+    try:
+        registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
+        if not registros:
+            return jsonify({
+                "horas_sobrando": 0,
+                "horas_faltantes": 0
+            }), 200
 
-    saldo_total = timedelta(0)
-    for registro in registros:
-        horas, minutos = map(int, registro.saldo.split(':'))
-        saldo_total += timedelta(hours=horas, minutes=minutos)
+        # Calcula o saldo total considerando a jornada padrão de 8 horas
+        saldo_total = timedelta(0)
+        for registro in registros:
+            try:
+                # Converte o saldo do registro para timedelta
+                horas, minutos = map(int, registro.saldo.split(':'))
+                horas_trabalhadas = timedelta(hours=horas, minutes=minutos)
+                
+                # Subtrai 8 horas da jornada padrão
+                saldo_diario = horas_trabalhadas - timedelta(hours=8)
+                saldo_total += saldo_diario
+                
+                logger.info(f"Registro {registro.id}: horas trabalhadas={horas_trabalhadas}, saldo diário={saldo_diario}")
+            except ValueError as e:
+                logger.error(f"Erro ao processar registro {registro.id}: {str(e)}")
+                continue
 
-    horas_sobrando = max(saldo_total, timedelta(0))
-    horas_faltantes = abs(min(saldo_total, timedelta(0)))
+        # Converte o timedelta para horas decimais
+        total_horas = saldo_total.total_seconds() / 3600
+        logger.info(f"Saldo total em horas: {total_horas}")
 
-    return jsonify({
-        "horas_sobrando": formatar_tempo(horas_sobrando),
-        "horas_faltantes": formatar_tempo(horas_faltantes)
-    }), 200
+        if total_horas >= 0:
+            return jsonify({
+                "horas_sobrando": round(total_horas, 2),
+                "horas_faltantes": 0
+            }), 200
+        else:
+            return jsonify({
+                "horas_sobrando": 0,
+                "horas_faltantes": round(abs(total_horas), 2)
+            }), 200
 
+    except Exception as e:
+        logger.error(f"Erro ao calcular saldo de horas: {str(e)}")
+        return jsonify({"message": "Erro ao calcular saldo de horas"}), 500
+    
 # Rota para obter ou editar um registro específico
 @app.route("/dados/<int:id>", methods=["GET", "PUT"])
 @login_required
@@ -261,21 +296,26 @@ def obter_ou_editar_registro(id):
 @app.route("/dados/mensal", methods=["GET"])
 @login_required
 def obter_dados_mensais():
-    registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
+    try:
+        registros = RegistroPonto.query.filter_by(usuario_id=current_user.id).all()
+        if not registros:
+            return jsonify({}), 200
 
-    dados_mensais = defaultdict(list)
-    for registro in registros:
-        mes = registro.data.strftime("%m-%Y")
-        horas, minutos = map(int, registro.saldo.split(':'))
-        total_horas = horas + minutos / 60
-        dados_mensais[mes].append(total_horas)
+        dados_mensais = defaultdict(list)
+        for registro in registros:
+            mes = registro.data.strftime("%m-%Y")
+            horas, minutos = map(int, registro.saldo.split(':'))
+            total_horas = horas + minutos / 60
+            dados_mensais[mes].append(total_horas)
 
-    medias_mensais = {
-        mes: sum(valores) / len(valores) if valores else 0
-        for mes, valores in dados_mensais.items()
-    }
-
-    return jsonify(medias_mensais), 200
+        medias_mensais = {
+            mes: sum(valores) / len(valores) if valores else 0
+            for mes, valores in dados_mensais.items()
+        }
+        return jsonify(medias_mensais), 200
+    except Exception as e:
+        logger.error(f"Erro ao obter dados mensais: {str(e)}")
+        return jsonify({"message": "Erro ao carregar dados mensais"}), 500
 
 # Rota para excluir um registro
 @app.route("/dados/<int:id>", methods=["DELETE"])
