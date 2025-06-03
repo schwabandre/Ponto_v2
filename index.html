@@ -9,99 +9,116 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Estilos Globais */
+        :root {
+            --primary-color: #da0000ef;
+            --primary-dark: #a00000;
+            --background-light: #f8f9fa;
+            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--background-light);
+            color: #333;
         }
 
         /* Cabeçalho */
         header {
-            background: linear-gradient(135deg, #da0000ef, #a00000);
-            color: white;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             padding: 1.5rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         header h1 {
             margin: 0;
             font-size: 2.5rem;
-            font-weight: bold;
+            font-weight: 700;
             text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         /* Container Principal */
         .main-container {
             max-width: 1400px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
+        /* Cards */
         .dashboard-card {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
             padding: 2rem;
             margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
 
         /* Formulário */
         #registroForm {
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            background: linear-gradient(135deg, #ffffff, var(--background-light));
             padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
         }
 
         .form-control {
-            border-radius: 8px;
-            border: 1px solid #ced4da;
-            padding: 0.75rem;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+            background-color: white;
         }
 
         .form-control:focus {
-            border-color: #da0000ef;
-            box-shadow: 0 0 0 0.2rem rgba(218, 0, 0, 0.25);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(218, 0, 0, 0.1);
         }
 
         .btn {
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .btn-primary {
-            background-color: #da0000ef;
-            border-color: #da0000ef;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
         }
 
         .btn-primary:hover {
-            background-color: #a00000;
-            border-color: #a00000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(218, 0, 0, 0.3);
         }
 
         /* Tabela */
         .table-container {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
             padding: 1.5rem;
             margin: 2rem 0;
             overflow: hidden;
         }
 
-        .table {
-            margin: 0;
-        }
-
         .table th {
-            background-color: #da0000ef;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             padding: 1rem;
             border: none;
         }
@@ -109,43 +126,77 @@
         .table td {
             padding: 1rem;
             vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
         }
 
         .table tbody tr:hover {
-            background-color: #f8f9fa;
-            transition: background-color 0.3s ease;
+            background-color: rgba(218, 0, 0, 0.05);
         }
 
         /* Gráficos */
         .charts-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
 
         .chart-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
 
         .chart-title {
             color: #333;
             font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
             text-align: center;
+            position: relative;
+        }
+
+        .chart-title::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 3px;
         }
 
         /* Rodapé */
         footer {
-            background: linear-gradient(135deg, #da0000ef, #a00000);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-card, .chart-card {
+            animation: fadeIn 0.5s ease-out;
         }
 
         /* Responsividade */
@@ -159,7 +210,12 @@
             }
 
             .dashboard-card {
-                padding: 1rem;
+                padding: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
             }
         }
     </style>
@@ -600,68 +656,4 @@ document.getElementById("editarBtn").addEventListener("click", function() {
             document.querySelector("#registroForm button[type='submit']").style.display = "block";
         })
         .catch(error => {
-            console.error("Erro:", error);
-            alert("Ocorreu um erro ao salvar a edição. Verifique o console para mais detalhes.");
-        });
-});
-
-// FUNÇÃO PARA EXCLUIR UM REGISTRO
-window.excluirRegistro = function(id) {
-    if (confirm("Tem certeza que deseja excluir este registro?")) {
-        fetch(`http://127.0.0.1:5000/dados/${id}`, {
-            method: "DELETE"
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                carregarRegistros();
-            })
-            .catch(error => console.error("Erro:", error));
-    }
-};
-
-// EVENT LISTENER PARA O FORMULÁRIO DE REGISTRO
-document.getElementById("registroForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const dados = {
-        data: document.getElementById("data").value,
-        entrada: document.getElementById("entrada").value,
-        saida_almoco: document.getElementById("saida_almoco").value,
-        retorno_almoco: document.getElementById("retorno_almoco").value,
-        saida: document.getElementById("saida").value,
-        obs: document.getElementById("obs").value
-    };
-
-    if (!validarData(dados.data)) {
-        alert("A data não pode ser futura.");
-        return;
-    }
-
-    if (!validarHorarios(dados)) {
-        return;
-    }
-
-    fetch("http://127.0.0.1:5000/registrar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text) });
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            carregarRegistros();
-        })
-        .catch(error => {
-            console.error("Erro:", error);
-            alert("Ocorreu um erro ao salvar o registro. Verifique o console para mais detalhes.");
-        });
-});
-    </script>
-</body>
-</html>
+            console.error("Erro:",
