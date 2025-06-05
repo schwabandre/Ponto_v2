@@ -10,20 +10,21 @@
     <style>
         /* Estilos Globais */
         :root {
-            --primary-color: #da0000ef;
-            --primary-dark: #a00000;
-            --background-light: #f8f9fa;
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --background-light: #f8fafc;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--background-light);
-            color: #333;
+            color: #1e293b;
         }
 
         /* Cabeçalho */
@@ -34,15 +35,17 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         header h1 {
             margin: 0;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
             text-align: center;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.025em;
         }
 
         /* Container Principal */
@@ -50,69 +53,90 @@
             max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1.5rem;
+            animation: fadeIn 0.5s ease-out;
         }
 
         /* Cards */
         .dashboard-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: var(--card-shadow);
             padding: 2rem;
             margin-bottom: 2rem;
             transition: var(--transition);
+            border: 1px solid rgba(148, 163, 184, 0.1);
         }
 
         .dashboard-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         /* Formulário */
         #registroForm {
             background: linear-gradient(135deg, #ffffff, var(--background-light));
             padding: 2rem;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: var(--card-shadow);
         }
 
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
         .form-control {
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
+            border-radius: 0.75rem;
+            border: 2px solid #e2e8f0;
             padding: 0.75rem 1rem;
             transition: var(--transition);
             background-color: white;
+            font-size: 1rem;
         }
 
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(218, 0, 0, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
         }
 
         .btn {
             padding: 0.75rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 0.75rem;
             font-weight: 600;
             transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             border: none;
+            color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(218, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
         }
 
         /* Tabela */
         .table-container {
             background: white;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: var(--card-shadow);
             padding: 1.5rem;
             margin: 2rem 0;
             overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .table {
+            margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
         }
 
         .table th {
@@ -120,13 +144,16 @@
             color: white;
             font-weight: 600;
             padding: 1rem;
-            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            font-size: 0.875rem;
         }
 
         .table td {
             padding: 1rem;
             vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
         }
 
         .table tbody tr {
@@ -134,7 +161,7 @@
         }
 
         .table tbody tr:hover {
-            background-color: rgba(218, 0, 0, 0.05);
+            background-color: rgba(37, 99, 235, 0.05);
         }
 
         /* Gráficos */
@@ -148,23 +175,25 @@
         .chart-card {
             background: white;
             padding: 2rem;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: var(--card-shadow);
             transition: var(--transition);
+            border: 1px solid rgba(148, 163, 184, 0.1);
         }
 
         .chart-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .chart-title {
-            color: #333;
+            color: #1e293b;
             font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             text-align: center;
             position: relative;
+            letter-spacing: -0.025em;
         }
 
         .chart-title::after {
@@ -199,6 +228,31 @@
             animation: fadeIn 0.5s ease-out;
         }
 
+        /* Botões de ação na tabela */
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            margin: 0 0.25rem;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            color: white;
+        }
+
+        .btn-warning:hover, .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
         /* Responsividade */
         @media (max-width: 768px) {
             .charts-container {
@@ -216,6 +270,60 @@
             .btn {
                 width: 100%;
                 margin-bottom: 0.5rem;
+            }
+
+            .table-responsive {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+                overflow-x: auto;
+            }
+        }
+
+        /* Melhorias de acessibilidade */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-light: #0f172a;
+                --secondary-color: #94a3b8;
+            }
+
+            body {
+                color: #f8fafc;
+            }
+
+            .dashboard-card,
+            .chart-card,
+            .table-container {
+                background: #1e293b;
+                border-color: rgba(148, 163, 184, 0.1);
+            }
+
+            .form-control {
+                background-color: #334155;
+                border-color: #475569;
+                color: #f8fafc;
+            }
+
+            .table td {
+                color: #e2e8f0;
+                border-bottom-color: #334155;
+            }
+
+            .table tbody tr:hover {
+                background-color: rgba(37, 99, 235, 0.1);
+            }
+
+            .chart-title {
+                color: #f8fafc;
             }
         }
     </style>
@@ -310,350 +418,397 @@
 
     <script>
         //SEÇÃO REFERENTE AOS REGISTROS DE HORÁRIOS
-        // SEÇÃO REFERENTE AOS REGISTROS DE HORÁRIOS
-document.addEventListener("DOMContentLoaded", function () {
-    const loggedIn = localStorage.getItem("loggedIn");
-    if (loggedIn !== "true") {
-        window.location.href = "login.html";
-    }
-
-    // ADICIONA UM PEQUENO ATRASO PARA GARANTIR QUE A PÁGINA ESTEJA CARREGADA
-    setTimeout(function () {
-        carregarRegistros();
-    }, 500);
-});
-
-// FUNÇÃO PARA VALIDAR HORÁRIOS
-function validarHorarios(dados) {
-    const entrada = new Date(`1970-01-01T${dados.entrada}`);
-    const saidaAlmoco = new Date(`1970-01-01T${dados.saida_almoco}`);
-    const retornoAlmoco = new Date(`1970-01-01T${dados.retorno_almoco}`);
-    const saida = new Date(`1970-01-01T${dados.saida}`);
-
-    if (entrada >= saidaAlmoco) {
-        alert("A entrada deve ser antes da saída para o almoço.");
-        return false;
-    }
-    if (saidaAlmoco >= retornoAlmoco) {
-        alert("A saída para o almoço deve ser antes do retorno.");
-        return false;
-    }
-    if (retornoAlmoco >= saida) {
-        alert("O retorno do almoço deve ser antes da saída.");
-        return false;
-    }
-    return true;
-}
-
-// FUNÇÃO PARA VALIDAR DATA
-function validarData(data) {
-    const hoje = new Date().toISOString().split('T')[0];
-    const dataInput = new Date(data).toISOString().split('T')[0];
-    return data <= hoje;
-}
-
-// FUNÇÃO PARA CARREGAR E EXIBIR OS REGISTROS
-function carregarRegistros() {
-    fetch("http://127.0.0.1:5000/dados")
-        .then(response => response.json())
-        .then(data => {
-            console.log("Dados recebidos:", data);
-            const tabela = document.getElementById("tabelaRegistros");
-            tabela.innerHTML = ""; // Limpa a tabela antes de preencher
-
-            data.forEach(registro => {
-                const linha = document.createElement("tr");
-                linha.innerHTML = `
-                    <td>${registro.data}</td>
-                    <td>${registro.entrada}</td>
-                    <td>${registro.saida_almoco}</td>
-                    <td>${registro.retorno_almoco}</td>
-                    <td>${registro.saida}</td>
-                    <td>${registro.saldo}</td>
-                    <td>${registro.extra}</td>
-                    <td>${registro.obs}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning" onclick="editarRegistro(${registro.id})">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="excluirRegistro(${registro.id})">Excluir</button>
-                    </td>
-                `;
-                tabela.appendChild(linha);
-            });
-
-            renderizarGraficoDiario(data);
-        })
-        .catch(error => console.error("Erro ao carregar registros diários:", error));
-
-    carregarDadosMensais();
-    carregarSaldoHoras();
-}
-
-// FUNÇÃO PARA RENDERIZAR GRÁFICO DIÁRIO
-function renderizarGraficoDiario(data) {
-    const canvasDiario = document.getElementById("graficoHoras");
-    const chartExistenteDiario = Chart.getChart(canvasDiario);
-    if (chartExistenteDiario) {
-        chartExistenteDiario.destroy();
-    }
-
-    new Chart(canvasDiario, {
-        type: "bar",
-        data: {
-            labels: data.map(registro => registro.data),
-            datasets: [{
-                label: "Horas Trabalhadas",
-                data: data.map(registro => {
-                    const [horas, minutos] = registro.saldo.split(':');
-                    return parseFloat(horas) + parseFloat(minutos) / 60;
-                }),
-                backgroundColor: "rgba(54, 162, 235, 0.6)",
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        callback: function (value) {
-                            return value.toFixed(1) + "h";
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: {
-                            size: 14
-                        }
-                    }
-                }
+        document.addEventListener("DOMContentLoaded", function () {
+            const loggedIn = localStorage.getItem("loggedIn");
+            if (loggedIn !== "true") {
+                window.location.href = "login.html";
             }
-        }
-    });
-}
 
-// FUNÇÃO PARA CARREGAR DADOS MENSAIS
-function carregarDadosMensais() {
-    fetch("http://127.0.0.1:5000/dados/mensal")
-        .then(response => response.json())
-        .then(data => {
-            if (Object.keys(data).length === 0) {
-                console.log("Nenhum dado mensal encontrado.");
+            setTimeout(function () {
+                carregarRegistros();
+            }, 500);
+        });
+
+        function validarHorarios(dados) {
+            const entrada = new Date(`1970-01-01T${dados.entrada}`);
+            const saidaAlmoco = new Date(`1970-01-01T${dados.saida_almoco}`);
+            const retornoAlmoco = new Date(`1970-01-01T${dados.retorno_almoco}`);
+            const saida = new Date(`1970-01-01T${dados.saida}`);
+
+            if (entrada >= saidaAlmoco) {
+                alert("A entrada deve ser antes da saída para o almoço.");
+                return false;
+            }
+            if (saidaAlmoco >= retornoAlmoco) {
+                alert("A saída para o almoço deve ser antes do retorno.");
+                return false;
+            }
+            if (retornoAlmoco >= saida) {
+                alert("O retorno do almoço deve ser antes da saída.");
+                return false;
+            }
+            return true;
+        }
+
+        function validarData(data) {
+            const hoje = new Date().toISOString().split('T')[0];
+            const dataInput = new Date(data).toISOString().split('T')[0];
+            return data <= hoje;
+        }
+
+        function carregarRegistros() {
+            fetch("http://127.0.0.1:5000/dados")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dados recebidos:", data);
+                    const tabela = document.getElementById("tabelaRegistros");
+                    tabela.innerHTML = "";
+
+                    data.forEach(registro => {
+                        const linha = document.createElement("tr");
+                        linha.innerHTML = `
+                            <td>${registro.data}</td>
+                            <td>${registro.entrada}</td>
+                            <td>${registro.saida_almoco}</td>
+                            <td>${registro.retorno_almoco}</td>
+                            <td>${registro.saida}</td>
+                            <td>${registro.saldo}</td>
+                            <td>${registro.extra}</td>
+                            <td>${registro.obs}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning btn-action" onclick="editarRegistro(${registro.id})">
+                                    <i class="fas fa-edit me-1"></i>Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger btn-action" onclick="excluirRegistro(${registro.id})">
+                                    <i class="fas fa-trash-alt me-1"></i>Excluir
+                                </button>
+                            </td>
+                        `;
+                        tabela.appendChild(linha);
+                    });
+
+                    renderizarGraficoDiario(data);
+                })
+                .catch(error => console.error("Erro ao carregar registros diários:", error));
+
+            carregarDadosMensais();
+            carregarSaldoHoras();
+        }
+
+        function renderizarGraficoDiario(data) {
+            const canvasDiario = document.getElementById("graficoHoras");
+            const chartExistenteDiario = Chart.getChart(canvasDiario);
+            if (chartExistenteDiario) {
+                chartExistenteDiario.destroy();
+            }
+
+            new Chart(canvasDiario, {
+                type: "bar",
+                data: {
+                    labels: data.map(registro => registro.data),
+                    datasets: [{
+                        label: "Horas Trabalhadas",
+                        data: data.map(registro => {
+                            const [horas, minutos] = registro.saldo.split(':');
+                            return parseFloat(horas) + parseFloat(minutos) / 60;
+                        }),
+                        backgroundColor: "rgba(37, 99, 235, 0.6)",
+                        borderColor: "rgba(37, 99, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return value.toFixed(1) + "h";
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function carregarDadosMensais() {
+            fetch("http://127.0.0.1:5000/dados/mensal")
+                .then(response => response.json())
+                .then(data => {
+                    if (Object.keys(data).length === 0) {
+                        console.log("Nenhum dado mensal encontrado.");
+                        return;
+                    }
+                    renderizarGraficoMensal(data);
+                })
+                .catch(error => console.error("Erro ao carregar registros mensais:", error));
+        }
+
+        function renderizarGraficoMensal(data) {
+            const canvasMensal = document.getElementById("graficoMensal");
+            const chartExistenteMensal = Chart.getChart(canvasMensal);
+            if (chartExistenteMensal) {
+                chartExistenteMensal.destroy();
+            }
+
+            new Chart(canvasMensal, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: "Média Mensal de Horas",
+                        data: Object.values(data),
+                        backgroundColor: "rgba(37, 99, 235, 0.6)",
+                        borderColor: "rgba(37, 99, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return value.toFixed(1) + "h";
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function carregarSaldoHoras() {
+            fetch("http://127.0.0.1:5000/dados/saldo")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dados de saldo recebidos:", data);
+                    renderizarGraficoSaldo(data);
+                })
+                .catch(error => console.error("Erro ao carregar saldo de horas:", error));
+        }
+
+        function renderizarGraficoSaldo(data) {
+            const canvasSaldo = document.getElementById("graficoSaldo");
+            const chartExistenteSaldo = Chart.getChart(canvasSaldo);
+            if (chartExistenteSaldo) {
+                chartExistenteSaldo.destroy();
+            }
+
+            new Chart(canvasSaldo, {
+                type: "bar",
+                data: {
+                    labels: ["Saldo de Banco de Horas"],
+                    datasets: [
+                        {
+                            label: "Horas Sobrando",
+                            data: [data.horas_sobrando],
+                            backgroundColor: "rgba(34, 197, 94, 0.6)",
+                            borderColor: "rgba(34, 197, 94, 1)",
+                            borderWidth: 1
+                        },
+                        {
+                            label: "Horas Faltantes",
+                            data: [data.horas_faltantes],
+                            backgroundColor: "rgba(239, 68, 68, 0.6)",
+                            borderColor: "rgba(239, 68, 68, 1)",
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "h";
+                                }
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.editarRegistro = function(id) {
+            fetch(`http://127.0.0.1:5000/dados/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar registro");
+                    }
+                    return response.json();
+                })
+                .then(registro => {
+                    document.getElementById("registroId").value = registro.id;
+                    document.getElementById("data").value = registro.data;
+                    document.getElementById("entrada").value = registro.entrada;
+                    document.getElementById("saida_almoco").value = registro.saida_almoco;
+                    document.getElementById("retorno_almoco").value = registro.retorno_almoco;
+                    document.getElementById("saida").value = registro.saida;
+                    document.getElementById("obs").value = registro.obs;
+
+                    document.getElementById("editarBtn").style.display = "block";
+                    document.querySelector("#registroForm button[type='submit']").style.display = "none";
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar registro:", error);
+                    alert("Erro ao carregar registro. Verifique o console para mais detalhes.");
+                });
+        };
+
+        document.getElementById("editarBtn").addEventListener("click", function() {
+            const dados = {
+                id: document.getElementById("registroId").value,
+                data: document.getElementById("data").value,
+                entrada: document.getElementById("entrada").value,
+                saida_almoco: document.getElementById("saida_almoco").value,
+                retorno_almoco: document.getElementById("retorno_almoco").value,
+                saida: document.getElementById("saida").value,
+                obs: document.getElementById("obs").value
+            };
+
+            if (!validarData(dados.data)) {
+                alert("A data não pode ser futura.");
                 return;
             }
-            renderizarGraficoMensal(data);
-        })
-        .catch(error => console.error("Erro ao carregar registros mensais:", error));
-}
 
-// FUNÇÃO PARA RENDERIZAR GRÁFICO MENSAL
-function renderizarGraficoMensal(data) {
-    const canvasMensal = document.getElementById("graficoMensal");
-    const chartExistenteMensal = Chart.getChart(canvasMensal);
-    if (chartExistenteMensal) {
-        chartExistenteMensal.destroy();
-    }
-
-    new Chart(canvasMensal, {
-        type: "bar",
-        data: {
-            labels: Object.keys(data),
-            datasets: [{
-                label: "Média Mensal de Horas",
-                data: Object.values(data),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        callback: function (value) {
-                            return value.toFixed(1) + "h";
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: {
-                            size: 14
-                        }
-                    }
-                }
+            if (!validarHorarios(dados)) {
+                return;
             }
-        }
-    });
-}
 
-// FUNÇÃO PARA CARREGAR SALDO DE HORAS
-function carregarSaldoHoras() {
-    fetch("http://127.0.0.1:5000/dados/saldo")
-        .then(response => response.json())
-        .then(data => {
-            console.log("Dados de saldo recebidos:", data);
-            renderizarGraficoSaldo(data);
-        })
-        .catch(error => console.error("Erro ao carregar saldo de horas:", error));
-}
-
-// FUNÇÃO PARA RENDERIZAR GRÁFICO DE SALDO
-function renderizarGraficoSaldo(data) {
-    const canvasSaldo = document.getElementById("graficoSaldo");
-    const chartExistenteSaldo = Chart.getChart(canvasSaldo);
-    if (chartExistenteSaldo) {
-        chartExistenteSaldo.destroy();
-    }
-
-    new Chart(canvasSaldo, {
-        type: "bar",
-        data: {
-            labels: ["Saldo de Banco de Horas"],
-            datasets: [
-                {
-                    label: "Horas Sobrando",
-                    data: [data.horas_sobrando],
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderWidth: 1
-                },
-                {
-                    label: "Horas Faltantes",
-                    data: [data.horas_faltantes],
-                    backgroundColor: "rgba(255, 99, 132, 0.6)",
-                    borderColor: "rgba(255, 99, 132, 1)",
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    stacked: true,
-                    beginAtZero: true,
-                    grid: { display: false },
-                    ticks: {
-                        callback: function(value) {
-                            return value + "h";
-                        }
+            fetch(`http://127.0.0.1:5000/dados/${dados.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
                     }
-                },
-                y: {
-                    stacked: true,
-                    grid: { display: false }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: { size: 14 }
-                    }
-                }
-            }
-        }
-    });
-}
-
-// FUNÇÃO PARA EDITAR UM REGISTRO
-window.editarRegistro = function(id) {
-    fetch(`http://127.0.0.1:5000/dados/${id}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erro ao carregar registro");
-            }
-            return response.json();
-        })
-        .then(registro => {
-            document.getElementById("registroId").value = registro.id;
-            document.getElementById("data").value = registro.data;
-            document.getElementById("entrada").value = registro.entrada;
-            document.getElementById("saida_almoco").value = registro.saida_almoco;
-            document.getElementById("retorno_almoco").value = registro.retorno_almoco;
-            document.getElementById("saida").value = registro.saida;
-            document.getElementById("obs").value = registro.obs;
-
-            document.getElementById("editarBtn").style.display = "block";
-            document.querySelector("#registroForm button[type='submit']").style.display = "none";
-        })
-        .catch(error => {
-            console.error("Erro ao carregar registro:", error);
-            alert("Erro ao carregar registro. Verifique o console para mais detalhes.");
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    carregarRegistros();
+                    document.getElementById("editarBtn").style.display = "none";
+                    document.querySelector("#registroForm button[type='submit']").style.display = "block";
+                })
+                .catch(error => {
+                    console.error("Erro:", error);
+                    alert("Erro ao atualizar registro. Verifique o console para mais detalhes.");
+                });
         });
-};
 
-// EVENT LISTENER PARA O BOTÃO DE EDITAR
-document.getElementById("editarBtn").addEventListener("click", function() {
-    const dados = {
-        id: document.getElementById("registroId").value,
-        data: document.getElementById("data").value,
-        entrada: document.getElementById("entrada").value,
-        saida_almoco: document.getElementById("saida_almoco").value,
-        retorno_almoco: document.getElementById("retorno_almoco").value,
-        saida: document.getElementById("saida").value,
-        obs: document.getElementById("obs").value
-    };
-
-    if (!validarData(dados.data)) {
-        alert("A data não pode ser futura.");
-        return;
-    }
-
-    if (!validarHorarios(dados)) {
-        return;
-    }
-
-    fetch(`http://127.0.0.1:5000/dados/${dados.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text) });
+        window.excluirRegistro = function(id) {
+            if (confirm("Tem certeza que deseja excluir este registro?")) {
+                fetch(`http://127.0.0.1:5000/dados/${id}`, {
+                    method: "DELETE"
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        carregarRegistros();
+                    })
+                    .catch(error => console.error("Erro ao excluir registro:", error));
             }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            carregarRegistros();
-            document.getElementById("editarBtn").style.display = "none";
-            document.querySelector("#registroForm button[type='submit']").style.display = "block";
-        })
-        .catch(error => {
-            console.error("Erro:",
+        };
+
+        document.getElementById("registroForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const dados = {
+                data: document.getElementById("data").value,
+                entrada: document.getElementById("entrada").value,
+                saida_almoco: document.getElementById("saida_almoco").value,
+                retorno_almoco: document.getElementById("retorno_almoco").value,
+                saida: document.getElementById("saida").value,
+                obs: document.getElementById("obs").value
+            };
+
+            if (!validarData(dados.data)) {
+                alert("A data não pode ser futura.");
+                return;
+            }
+
+            if (!validarHorarios(dados)) {
+                return;
+            }
+
+            fetch("http://127.0.0.1:5000/registrar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    this.reset();
+                    carregarRegistros();
+                })
+                .catch(error => console.error("Erro ao registrar ponto:", error));
+        });
+    </script>
+</body>
+</html>
