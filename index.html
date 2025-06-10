@@ -5,416 +5,459 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Horários</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos Globais */
-        :root {
-            --primary-color: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary-color: #64748b;
-            --background-light: #f8fafc;
-            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        html, body {
-            height: 100%;
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--background-light);
-            color: #1e293b;
+            box-sizing: border-box;
         }
 
-        /* Cabeçalho */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            padding: 1.5rem 0;
-            box-shadow: var(--card-shadow);
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            z-index: 50;
+            backdrop-filter: blur(8px);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            letter-spacing: -0.025em;
-        }
-
-        /* Container Principal */
-        .main-container {
-            max-width: 1400px;
-            margin: 2rem auto;
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 0 1.5rem;
-            animation: fadeIn 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
         }
 
         /* Cards */
-        .dashboard-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-            border: 1px solid rgba(148, 163, 184, 0.1);
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
         }
 
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        /* Formulário */
-        #registroForm {
-            background: linear-gradient(135deg, #ffffff, var(--background-light));
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
         .form-label {
-            font-weight: 600;
-            color: var(--secondary-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
             margin-bottom: 0.5rem;
         }
 
-        .form-control {
-            border-radius: 0.75rem;
-            border: 2px solid #e2e8f0;
-            padding: 0.75rem 1rem;
-            transition: var(--transition);
-            background-color: white;
-            font-size: 1rem;
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: var(--white);
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .form-input:focus {
             outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
         }
 
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Buttons */
         .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border: none;
-            color: white;
+            background: var(--primary);
+            color: var(--white);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            background: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
-        /* Tabela */
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        /* Table */
         .table-container {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-            padding: 1.5rem;
             margin: 2rem 0;
             overflow: hidden;
-            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-200);
         }
 
         .table {
-            margin: 0;
-            border-collapse: separate;
-            border-spacing: 0;
             width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
         }
 
         .table th {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            font-weight: 600;
+            background: var(--gray-50);
             padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
-            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            color: var(--gray-600);
+            border-bottom: 1px solid var(--gray-200);
         }
 
         .table td {
             padding: 1rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #e2e8f0;
-            color: #475569;
-        }
-
-        .table tbody tr {
-            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 0.875rem;
+            color: var(--gray-700);
         }
 
         .table tbody tr:hover {
-            background-color: rgba(37, 99, 235, 0.05);
+            background: var(--gray-50);
         }
 
-        /* Gráficos */
-        .charts-container {
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Charts */
+        .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
 
-        .chart-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-        }
-
-        .chart-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .chart-title {
-            color: #1e293b;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            text-align: center;
+        .chart-container {
             position: relative;
-            letter-spacing: -0.025em;
+            height: 300px;
         }
 
-        .chart-title::after {
-            content: '';
-            position: absolute;
-            bottom: -0.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border-radius: 3px;
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        /* Rodapé */
-        footer {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-200);
             text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
 
-        .dashboard-card, .chart-card {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        /* Botões de ação na tabela */
-        .btn-action {
-            padding: 0.5rem 1rem;
+        .stat-label {
             font-size: 0.875rem;
-            border-radius: 0.5rem;
-            margin: 0 0.25rem;
+            color: var(--gray-600);
+            font-weight: 500;
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border: none;
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            border: none;
-            color: white;
-        }
-
-        .btn-warning:hover, .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Responsividade */
+        /* Responsive */
         @media (max-width: 768px) {
-            .charts-container {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            header h1 {
-                font-size: 2rem;
+            .charts-grid {
+                grid-template-columns: 1fr;
             }
 
-            .dashboard-card {
-                padding: 1.5rem;
+            .btn-group {
+                flex-direction: column;
             }
 
-            .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-
-            .table-responsive {
-                margin: 0 -1rem;
-                padding: 0 1rem;
+            .table-container {
                 overflow-x: auto;
             }
-        }
 
-        /* Melhorias de acessibilidade */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
+            .table {
+                min-width: 800px;
             }
         }
 
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background-light: #0f172a;
-                --secondary-color: #94a3b8;
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-            body {
-                color: #f8fafc;
-            }
+        .card {
+            animation: fadeIn 0.3s ease-out;
+        }
 
-            .dashboard-card,
-            .chart-card,
-            .table-container {
-                background: #1e293b;
-                border-color: rgba(148, 163, 184, 0.1);
-            }
-
-            .form-control {
-                background-color: #334155;
-                border-color: #475569;
-                color: #f8fafc;
-            }
-
-            .table td {
-                color: #e2e8f0;
-                border-bottom-color: #334155;
-            }
-
-            .table tbody tr:hover {
-                background-color: rgba(37, 99, 235, 0.1);
-            }
-
-            .chart-title {
-                color: #f8fafc;
-            }
+        /* Hidden elements */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Dashboard de Horários</h1>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-clock"></i>
+                Dashboard de Horários
+            </div>
+        </div>
     </header>
 
-    <div class="main-container">
-        <div class="dashboard-card">
-            <h2 class="text-center mb-4">Registrar Ponto</h2>
-            <form id="registroForm" class="row g-3">
-                <input type="hidden" id="registroId">
-                <div class="col-md-6">
-                    <label for="data" class="form-label">Data</label>
-                    <input type="date" class="form-control" id="data" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="entrada" class="form-label">Entrada</label>
-                    <input type="time" class="form-control" id="entrada" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="saida_almoco" class="form-label">Saída para o almoço</label>
-                    <input type="time" class="form-control" id="saida_almoco" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="retorno_almoco" class="form-label">Retorno do almoço</label>
-                    <input type="time" class="form-control" id="retorno_almoco" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="saida" class="form-label">Saída</label>
-                    <input type="time" class="form-control" id="saida" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="obs" class="form-label">Observações</label>
-                    <textarea class="form-control" id="obs" rows="1"></textarea>
-                </div>
-                <div class="col-12 text-center mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Registrar
-                    </button>
-                    <button type="button" class="btn btn-success" id="editarBtn" style="display: none;">
-                        <i class="fas fa-edit me-2"></i>Salvar Edição
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="table-container">
-            <h2 class="mb-4">Registros</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Entrada</th>
-                            <th>Saída Almoço</th>
-                            <th>Retorno Almoço</th>
-                            <th>Saída</th>
-                            <th>Saldo</th>
-                            <th>Extra</th>
-                            <th>Observações</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaRegistros"></tbody>
-                </table>
+    <div class="container">
+        <!-- Registration Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Registrar Ponto</h2>
+            </div>
+            <div class="card-body">
+                <form id="registroForm">
+                    <input type="hidden" id="registroId">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="data" class="form-label">Data</label>
+                            <input type="date" class="form-input" id="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="entrada" class="form-label">Entrada</label>
+                            <input type="time" class="form-input" id="entrada" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="saida_almoco" class="form-label">Saída para o almoço</label>
+                            <input type="time" class="form-input" id="saida_almoco" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="retorno_almoco" class="form-label">Retorno do almoço</label>
+                            <input type="time" class="form-input" id="retorno_almoco" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="saida" class="form-label">Saída</label>
+                            <input type="time" class="form-input" id="saida" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="obs" class="form-label">Observações</label>
+                            <textarea class="form-input form-textarea" id="obs" placeholder="Observações opcionais..."></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Registrar
+                        </button>
+                        <button type="button" class="btn btn-success hidden" id="editarBtn">
+                            <i class="fas fa-edit"></i>
+                            Salvar Edição
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="charts-container">
-            <div class="chart-card">
-                <h3 class="chart-title">Média Diária de Horas</h3>
-                <canvas id="graficoHoras"></canvas>
+        <!-- Records Table -->
+        <div class="card table-container">
+            <div class="card-header">
+                <h2 class="card-title">Registros</h2>
             </div>
-            <div class="chart-card">
-                <h3 class="chart-title">Média Mensal de Horas</h3>
-                <canvas id="graficoMensal"></canvas>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Entrada</th>
+                        <th>Saída Almoço</th>
+                        <th>Retorno Almoço</th>
+                        <th>Saída</th>
+                        <th>Saldo</th>
+                        <th>Extra</th>
+                        <th>Observações</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaRegistros"></tbody>
+            </table>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Horas Diárias</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="graficoHoras"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Média Mensal</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="graficoMensal"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="chart-card">
-            <h3 class="chart-title">Saldo de Banco de Horas</h3>
-            <canvas id="graficoSaldo"></canvas>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Saldo de Banco de Horas</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="graficoSaldo"></canvas>
+                </div>
+            </div>
         </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 Dashboard de Horários. Todos os direitos reservados</p>
-    </footer>
 
     <script>
         //SEÇÃO REFERENTE AOS REGISTROS DE HORÁRIOS
@@ -476,11 +519,11 @@
                             <td>${registro.extra}</td>
                             <td>${registro.obs}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning btn-action" onclick="editarRegistro(${registro.id})">
-                                    <i class="fas fa-edit me-1"></i>Editar
+                                <button class="btn btn-sm btn-warning" onclick="editarRegistro(${registro.id})">
+                                    <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger btn-action" onclick="excluirRegistro(${registro.id})">
-                                    <i class="fas fa-trash-alt me-1"></i>Excluir
+                                <button class="btn btn-sm btn-danger" onclick="excluirRegistro(${registro.id})">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
                         `;
@@ -512,19 +555,25 @@
                             const [horas, minutos] = registro.saldo.split(':');
                             return parseFloat(horas) + parseFloat(minutos) / 60;
                         }),
-                        backgroundColor: "rgba(37, 99, 235, 0.6)",
-                        borderColor: "rgba(37, 99, 235, 1)",
-                        borderWidth: 1
+                        backgroundColor: "rgba(99, 102, 241, 0.8)",
+                        borderColor: "rgba(99, 102, 241, 1)",
+                        borderWidth: 0,
+                        borderRadius: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             grid: {
-                                display: false
+                                color: 'rgba(0, 0, 0, 0.05)'
                             },
                             ticks: {
                                 callback: function (value) {
@@ -535,17 +584,6 @@
                         x: {
                             grid: {
                                 display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14
-                                }
                             }
                         }
                     }
@@ -580,19 +618,25 @@
                     datasets: [{
                         label: "Média Mensal de Horas",
                         data: Object.values(data),
-                        backgroundColor: "rgba(37, 99, 235, 0.6)",
-                        borderColor: "rgba(37, 99, 235, 1)",
-                        borderWidth: 1
+                        backgroundColor: "rgba(99, 102, 241, 0.8)",
+                        borderColor: "rgba(99, 102, 241, 1)",
+                        borderWidth: 0,
+                        borderRadius: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             grid: {
-                                display: false
+                                color: 'rgba(0, 0, 0, 0.05)'
                             },
                             ticks: {
                                 callback: function (value) {
@@ -603,17 +647,6 @@
                         x: {
                             grid: {
                                 display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14
-                                }
                             }
                         }
                     }
@@ -646,16 +679,18 @@
                         {
                             label: "Horas Sobrando",
                             data: [data.horas_sobrando],
-                            backgroundColor: "rgba(34, 197, 94, 0.6)",
-                            borderColor: "rgba(34, 197, 94, 1)",
-                            borderWidth: 1
+                            backgroundColor: "rgba(16, 185, 129, 0.8)",
+                            borderColor: "rgba(16, 185, 129, 1)",
+                            borderWidth: 0,
+                            borderRadius: 4
                         },
                         {
                             label: "Horas Faltantes",
                             data: [data.horas_faltantes],
-                            backgroundColor: "rgba(239, 68, 68, 0.6)",
+                            backgroundColor: "rgba(239, 68, 68, 0.8)",
                             borderColor: "rgba(239, 68, 68, 1)",
-                            borderWidth: 1
+                            borderWidth: 0,
+                            borderRadius: 4
                         }
                     ]
                 },
@@ -663,11 +698,18 @@
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
                     scales: {
                         x: {
                             stacked: true,
                             beginAtZero: true,
-                            grid: { display: false },
+                            grid: { 
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
                             ticks: {
                                 callback: function(value) {
                                     return value + "h";
@@ -676,15 +718,8 @@
                         },
                         y: {
                             stacked: true,
-                            grid: { display: false }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { size: 14 }
+                            grid: { 
+                                display: false 
                             }
                         }
                     }
@@ -709,8 +744,8 @@
                     document.getElementById("saida").value = registro.saida;
                     document.getElementById("obs").value = registro.obs;
 
-                    document.getElementById("editarBtn").style.display = "block";
-                    document.querySelector("#registroForm button[type='submit']").style.display = "none";
+                    document.getElementById("editarBtn").classList.remove("hidden");
+                    document.querySelector("#registroForm button[type='submit']").classList.add("hidden");
                 })
                 .catch(error => {
                     console.error("Erro ao carregar registro:", error);
@@ -752,8 +787,8 @@
                 .then(data => {
                     alert(data.message);
                     carregarRegistros();
-                    document.getElementById("editarBtn").style.display = "none";
-                    document.querySelector("#registroForm button[type='submit']").style.display = "block";
+                    document.getElementById("editarBtn").classList.add("hidden");
+                    document.querySelector("#registroForm button[type='submit']").classList.remove("hidden");
                 })
                 .catch(error => {
                     console.error("Erro:", error);
