@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Horários</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,100 +15,133 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --white: #ffffff;
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --primary-dark: #1d4ed8;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --radius: 8px;
-            --radius-lg: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--gray-50);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
             color: var(--gray-900);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         /* Header */
         .header {
             background: var(--white);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--gray-200);
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 50;
-            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow-sm);
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            color: var(--primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo i {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Main Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
         /* Cards */
         .card {
             background: var(--white);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             box-shadow: var(--shadow);
             border: 1px solid var(--gray-200);
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
 
         .card-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--gray-200);
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-100);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
         }
 
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .card-body {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         /* Form Styles */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group {
@@ -118,29 +151,31 @@
 
         .form-label {
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--gray-700);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .form-input {
-            padding: 0.75rem;
-            border: 1px solid var(--gray-300);
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
             border-radius: var(--radius);
             font-size: 0.875rem;
             transition: all 0.2s ease;
             background: var(--white);
+            font-weight: 500;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
+            box-shadow: 0 0 0 4px rgb(59 130 246 / 0.1);
+            transform: translateY(-1px);
         }
 
         .form-textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         /* Buttons */
@@ -148,53 +183,72 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             border-radius: var(--radius);
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--gradient-primary);
             color: var(--white);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgb(59 130 246 / 0.3);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: var(--white);
         }
 
         .btn-success:hover {
-            background: #059669;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgb(16 185 129 / 0.3);
         }
 
         .btn-warning {
-            background: var(--warning);
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
             color: var(--white);
         }
 
         .btn-warning:hover {
-            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgb(245 158 11 / 0.3);
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: var(--white);
         }
 
         .btn-danger:hover {
-            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgb(239 68 68 / 0.3);
         }
 
         .btn-sm {
@@ -204,16 +258,16 @@
 
         .btn-group {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         /* Table */
         .table-container {
-            margin: 2rem 0;
+            margin: 0;
             overflow: hidden;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             border: 1px solid var(--gray-200);
         }
 
@@ -224,26 +278,32 @@
         }
 
         .table th {
-            background: var(--gray-50);
-            padding: 1rem;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            padding: 1.5rem 1rem;
             text-align: left;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             color: var(--gray-600);
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 2px solid var(--gray-200);
         }
 
         .table td {
-            padding: 1rem;
+            padding: 1.25rem 1rem;
             border-bottom: 1px solid var(--gray-100);
             font-size: 0.875rem;
             color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
         }
 
         .table tbody tr:hover {
-            background: var(--gray-50);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+            transform: scale(1.01);
         }
 
         .table tbody tr:last-child td {
@@ -253,43 +313,70 @@
         /* Charts */
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 2rem;
-            margin: 2rem 0;
         }
 
         .chart-container {
             position: relative;
-            height: 300px;
+            height: 400px;
+            padding: 1rem;
+        }
+
+        .chart-full {
+            grid-column: 1 / -1;
         }
 
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: var(--white);
-            padding: 1.5rem;
-            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border-radius: var(--radius-xl);
             border: 1px solid var(--gray-200);
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
             font-size: 0.875rem;
             color: var(--gray-600);
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         /* Responsive */
@@ -317,13 +404,21 @@
             .table {
                 min-width: 800px;
             }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
         }
 
         /* Animations */
-        @keyframes fadeIn {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -331,9 +426,24 @@
             }
         }
 
-        .card {
-            animation: fadeIn 0.3s ease-out;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
 
         /* Hidden elements */
         .hidden {
@@ -355,7 +465,10 @@
         <!-- Registration Form -->
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Registrar Ponto</h2>
+                <h2 class="card-title">
+                    <i class="fas fa-plus-circle"></i>
+                    Registrar Ponto
+                </h2>
             </div>
             <div class="card-body">
                 <form id="registroForm">
@@ -403,7 +516,10 @@
         <!-- Records Table -->
         <div class="card table-container">
             <div class="card-header">
-                <h2 class="card-title">Registros</h2>
+                <h2 class="card-title">
+                    <i class="fas fa-table"></i>
+                    Registros
+                </h2>
             </div>
             <table class="table">
                 <thead>
@@ -427,7 +543,10 @@
         <div class="charts-grid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Horas Diárias</h3>
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Horas Diárias
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
@@ -437,7 +556,10 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Média Mensal</h3>
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Média Mensal
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
@@ -447,9 +569,12 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card chart-full">
             <div class="card-header">
-                <h3 class="card-title">Saldo de Banco de Horas</h3>
+                <h3 class="card-title">
+                    <i class="fas fa-balance-scale"></i>
+                    Saldo de Banco de Horas
+                </h3>
             </div>
             <div class="card-body">
                 <div class="chart-container">
@@ -555,10 +680,11 @@
                             const [horas, minutos] = registro.saldo.split(':');
                             return parseFloat(horas) + parseFloat(minutos) / 60;
                         }),
-                        backgroundColor: "rgba(99, 102, 241, 0.8)",
-                        borderColor: "rgba(99, 102, 241, 1)",
-                        borderWidth: 0,
-                        borderRadius: 4
+                        backgroundColor: "rgba(59, 130, 246, 0.8)",
+                        borderColor: "rgba(59, 130, 246, 1)",
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        borderSkipped: false,
                     }]
                 },
                 options: {
@@ -567,15 +693,35 @@
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y.toFixed(1)}h trabalhadas`;
+                                }
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
                             },
                             ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
                                 callback: function (value) {
                                     return value.toFixed(1) + "h";
                                 }
@@ -584,8 +730,19 @@
                         x: {
                             grid: {
                                 display: false
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -612,16 +769,22 @@
             }
 
             new Chart(canvasMensal, {
-                type: "bar",
+                type: "line",
                 data: {
                     labels: Object.keys(data),
                     datasets: [{
                         label: "Média Mensal de Horas",
                         data: Object.values(data),
-                        backgroundColor: "rgba(99, 102, 241, 0.8)",
-                        borderColor: "rgba(99, 102, 241, 1)",
-                        borderWidth: 0,
-                        borderRadius: 4
+                        backgroundColor: "rgba(139, 92, 246, 0.1)",
+                        borderColor: "rgba(139, 92, 246, 1)",
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: "rgba(139, 92, 246, 1)",
+                        pointBorderColor: "#fff",
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
                     }]
                 },
                 options: {
@@ -630,15 +793,35 @@
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Média: ${context.parsed.y.toFixed(1)}h`;
+                                }
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
                             },
                             ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
                                 callback: function (value) {
                                     return value.toFixed(1) + "h";
                                 }
@@ -647,8 +830,19 @@
                         x: {
                             grid: {
                                 display: false
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1200,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -672,56 +866,57 @@
             }
 
             new Chart(canvasSaldo, {
-                type: "bar",
+                type: "doughnut",
                 data: {
-                    labels: ["Saldo de Banco de Horas"],
-                    datasets: [
-                        {
-                            label: "Horas Sobrando",
-                            data: [data.horas_sobrando],
-                            backgroundColor: "rgba(16, 185, 129, 0.8)",
-                            borderColor: "rgba(16, 185, 129, 1)",
-                            borderWidth: 0,
-                            borderRadius: 4
-                        },
-                        {
-                            label: "Horas Faltantes",
-                            data: [data.horas_faltantes],
-                            backgroundColor: "rgba(239, 68, 68, 0.8)",
-                            borderColor: "rgba(239, 68, 68, 1)",
-                            borderWidth: 0,
-                            borderRadius: 4
-                        }
-                    ]
+                    labels: ["Horas Sobrando", "Horas Faltantes"],
+                    datasets: [{
+                        data: [data.horas_sobrando, data.horas_faltantes],
+                        backgroundColor: [
+                            "rgba(16, 185, 129, 0.8)",
+                            "rgba(239, 68, 68, 0.8)"
+                        ],
+                        borderColor: [
+                            "rgba(16, 185, 129, 1)",
+                            "rgba(239, 68, 68, 1)"
+                        ],
+                        borderWidth: 3,
+                        hoverOffset: 10
+                    }]
                 },
                 options: {
-                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom'
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: true,
-                            beginAtZero: true,
-                            grid: { 
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return value + "h";
-                                }
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                color: '#64748b'
                             }
                         },
-                        y: {
-                            stacked: true,
-                            grid: { 
-                                display: false 
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed}h`;
+                                }
                             }
                         }
+                    },
+                    cutout: '60%',
+                    animation: {
+                        animateRotate: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
